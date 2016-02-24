@@ -1,7 +1,6 @@
 FROM ubuntu:14.04
 MAINTAINER snowmoon1242
 
-
 # reset apt-get sources list
 RUN rm -f /etc/apt/sources.list && \
     echo "deb http://jp.archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse" >> /etc/apt/sources.list && \
@@ -44,5 +43,14 @@ RUN wget http://ftp.riken.jp/pub/lang/CPAN/modules/by-category/13_Internationali
 &&  make test \
 &&  make install
 
-# start apache , endless wait
+#Activate CGI
+RUN ln -s /etc/apache2/mods-available/cgid.load /etc/apache2/mods-enabled/ \
+&&  ln -s /etc/apache2/mods-available/cgid.conf /etc/apache2/mods-enabled/
+
+#copy cgi file
+COPY FeedConv.cgi /usr/lib/cgi-bin/
+RUN chown www-data: /usr/lib/cgi-bin/FeedConv.cgi \
+&&  chmod +x /usr/lib/cgi-bin/FeedConv.cgi
+
+# start apache & endless
 CMD apachectl start && tail -f /dev/null
