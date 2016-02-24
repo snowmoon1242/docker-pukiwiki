@@ -1,6 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER snowmoon1242
 
+
 # reset apt-get sources list
 RUN rm -f /etc/apt/sources.list && \
     echo "deb http://jp.archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse" >> /etc/apt/sources.list && \
